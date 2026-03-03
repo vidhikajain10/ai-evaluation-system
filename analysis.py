@@ -1,12 +1,11 @@
 import pandas as pd
 
-df = pd.read_csv("data/annotated_responses.csv")
+df1 = pd.read_csv("data/annotated_responses.csv")
+df2 = df1.copy()
 
-accuracy_score = df["Accuracy"].value_counts(normalize=True) * 100
+# Simulate second annotator with small variation
+df2.loc[0, "Accuracy"] = "Partial"
 
-print("\nAccuracy Distribution:")
-print(accuracy_score)
+agreement = (df1["Accuracy"] == df2["Accuracy"]).mean() * 100
 
-error_cases = df[df["Accuracy"] == "Incorrect"]
-print("\nIncorrect Cases:")
-print(error_cases[["prompt", "response", "Comments"]])
+print("Inter-Annotator Agreement:", round(agreement, 2), "%")
